@@ -1,3 +1,4 @@
+#!/bin/bash
 # 02.26.23 
 # Currently this file assumes a fresh and updated rasbaian install with appropriate networking configured.
 
@@ -45,9 +46,9 @@ echo "Building scripts..."
 cd /home/$username
 mkdir scripts
 cd /home/$username/scripts
-sudo /bin/sh -c 'echo "mpg321 -Z /home/unbird/sounds/*.mp3" > weekday.sh'
+sudo /bin/sh -c 'echo "mpg321 -Z /home/$username/sounds/*.mp3" > weekday.sh'
 sudo chmod uga+rwx weekday.sh
-sudo /bin/sh -c 'echo "mpg321 -Z /home/unbird/sounds/z_*.mp3" > weekend.sh'
+sudo /bin/sh -c 'echo "mpg321 -Z /home/$username/sounds/z_*.mp3" > weekend.sh'
 sudo chmod uga+rwx weekend.sh
 sudo /bin/sh -c 'echo "pkill mpg321" > clockout.sh'
 sudo chmod uga+rwx clockout.sh
@@ -66,7 +67,7 @@ sudo /bin/sh -c 'echo "
 
 # Samba setup - help from: http://raspberrywebserver.com/serveradmin/share-your-raspberry-pis-files-and-folders-across-a-network.html
 echo "Setting up Samba share..."
-sudo /bin/sh -c 'echo "[unbird/sounds]" >> /etc/samba/smb.conf'
+sudo /bin/sh -c 'echo "[rpi-unbird/sounds]" >> /etc/samba/smb.conf'
 sudo /bin/sh -c 'echo "   comment= Where The Sounds Are Kept" >> /etc/samba/smb.conf'
 sudo /bin/sh -c 'echo "   path=/home/$username/sounds" >> /etc/samba/smb.conf'
 sudo /bin/sh -c 'echo "   browseable=Yes" >> /etc/samba/smb.conf'
