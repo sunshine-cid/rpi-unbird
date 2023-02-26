@@ -72,7 +72,7 @@ sudo /bin/sh -c 'echo "   path=/home/$username/sounds" >> /etc/samba/smb.conf'
 sudo /bin/sh -c 'echo "   browseable=Yes" >> /etc/samba/smb.conf'
 sudo /bin/sh -c 'echo "   writeable=Yes" >> /etc/samba/smb.conf'
 sudo /bin/sh -c 'echo "   only guest=no" >> /etc/samba/smb.conf'
-sudo /bin/sh -c 'echo "   create sudo /bin/sh -c 'mask=0777" >> /etc/samba/smb.conf''
+sudo /bin/sh -c 'echo "   create mask=0777" >> /etc/samba/smb.conf'
 sudo /bin/sh -c 'echo "   directory mask=0777" >> /etc/samba/smb.conf'
 sudo /bin/sh -c 'echo "   public=no" >> /etc/samba/smb.conf'
 
