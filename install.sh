@@ -1,6 +1,7 @@
 #!/bin/bash
 # 02.26.23 
 # Currently this file assumes a fresh and updated rasbaian install with appropriate networking configured.
+# Currently some sudo echo commands do not pass variables
 
 #Read potential command line flags and set variables
 #Current flags:
@@ -23,6 +24,7 @@ sudo usermod -a -G audio,sudo $username
 echo "Set hostname as $username-1 and set in /etc/hosts"
 sudo hostnamectl set-hostname "$username-1" --pretty
 sudo /bin/sh -c 'echo "127.0.0.1       localhost" > /etc/hosts'
+##echo file, sudo echo file in
 sudo /bin/sh -c 'echo "127.0.1.1       $username-1" >> /etc/hosts'
 
 echo "Installing necessary software..."
@@ -67,6 +69,7 @@ sudo /bin/sh -c 'echo "
 
 # Samba setup - help from: http://raspberrywebserver.com/serveradmin/share-your-raspberry-pis-files-and-folders-across-a-network.html
 echo "Setting up Samba share..."
+##echo file, sudo echo file in
 sudo /bin/sh -c 'echo "[rpi-unbird/sounds]" >> /etc/samba/smb.conf'
 sudo /bin/sh -c 'echo "   comment= Where The Sounds Are Kept" >> /etc/samba/smb.conf'
 sudo /bin/sh -c 'echo "   path=/home/$username/sounds" >> /etc/samba/smb.conf'
