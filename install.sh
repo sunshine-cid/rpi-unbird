@@ -3,7 +3,7 @@
 
 #Read potential command line flags and set variables
 #Current flags:
-#-u username - set username to build setup under, if empty use current user
+#-u username - set username to build setup under, if empty use current user. Username will end up in sudo and audio groups
 
 while getopts u: flag
 do
@@ -15,6 +15,14 @@ done
 if [ -z "$username" ]; then username="$USER"; fi
 
 echo "Username set as: $username";
+
+echo "Set permissions for sudo and audio for username"
+sudo usermod -a -G audio,sudo $username
+
+echo "Set hostname as $username-1 and set in /etc/hosts"
+sudo /bin/sh -c 'echo "$username-1" > /etc/hostname'
+sudo /bin/sh -c 'echo "127.0.0.1       localhost" > /etc/hosts'
+sudo /bin/sh -c 'echo "127.0.1.1       $username-1" >> /etc/hosts'
 
 echo "Installing necessary software..."
 sudo apt-get -y install mpg321
