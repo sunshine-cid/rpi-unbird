@@ -20,7 +20,7 @@ echo "Set permissions for sudo and audio for username"
 sudo usermod -a -G audio,sudo $username
 
 echo "Set hostname as $username-1 and set in /etc/hosts"
-sudo /bin/sh -c 'echo "$username-1" > /etc/hostname'
+sudo hostnamectl set-hostname "$username-1" --pretty
 sudo /bin/sh -c 'echo "127.0.0.1       localhost" > /etc/hosts'
 sudo /bin/sh -c 'echo "127.0.1.1       $username-1" >> /etc/hosts'
 
