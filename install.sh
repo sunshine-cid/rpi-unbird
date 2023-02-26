@@ -46,11 +46,11 @@ cd /home/$username
 mkdir scripts
 cd /home/$username/scripts
 sudo /bin/sh -c 'echo "mpg321 -Z /home/unbird/sounds/*.mp3" > weekday.sh'
-chmod uga+rwx weekday.sh
+sudo chmod uga+rwx weekday.sh
 sudo /bin/sh -c 'echo "mpg321 -Z /home/unbird/sounds/z_*.mp3" > weekend.sh'
-chmod uga+rwx weekend.sh
+sudo chmod uga+rwx weekend.sh
 sudo /bin/sh -c 'echo "pkill mpg321" > clockout.sh'
-chmod uga+rwx clockout.sh
+sudo chmod uga+rwx clockout.sh
 
 #Chron Jobs: Setup as root
 echo "Setting cron jobs..."
