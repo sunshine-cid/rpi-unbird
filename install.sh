@@ -1,7 +1,7 @@
 #!/bin/bash
-# 02.26.23 
+# 02.27.23 
 # Currently this file assumes a fresh and updated rasbaian install with appropriate networking configured.
-# Currently some sudo echo commands do not pass variables
+# Currently permissions are too open, need to correct
 
 #Read potential command line flags and set variables
 #Current flags:
@@ -58,14 +58,14 @@ sudo chmod uga+rwx clockout.sh
 #Chron Jobs: Setup as root
 echo "Setting cron jobs..."
 sudo /bin/sh -c "echo '
-0 9 * * 1,2,3,4,5 unbird /home/$username/scripts/weekday.sh
-' > /etc/cron.d/weekday"
+0 9 * * 1,2,3,4,5 $username /home/$username/scripts/weekday.sh
+' > /etc/cron.d/rpi-unbird-weekday"
 sudo /bin/sh -c "echo '
-0 9 * * 0,6 admin /home/$username/scripts/weekend.sh
-' > /etc/cron.d/weekend"
+0 9 * * 0,6 $username /home/$username/scripts/weekend.sh
+' > /etc/cron.d/rpi-unbird-weekend"
 sudo /bin/sh -c "echo '
-0 17 * * * root home/$username/scripts/clockout.sh
-' > /etc/cron.d/clockout"
+0 17 * * * $username home/$username/scripts/clockout.sh
+' > /etc/cron.d/rpi-unbird-clockout"
 
 # Samba setup - help from: http://raspberrywebserver.com/serveradmin/share-your-raspberry-pis-files-and-folders-across-a-network.html
 echo "Setting up Samba share..."
