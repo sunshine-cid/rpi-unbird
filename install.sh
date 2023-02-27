@@ -23,9 +23,9 @@ sudo usermod -a -G audio,sudo $username
 
 echo "Set hostname as $username-1 and set in /etc/hosts"
 sudo hostnamectl set-hostname "$username-1" --pretty
-sudo /bin/sh -c 'echo "127.0.0.1       localhost" > /etc/hosts'
+sudo /bin/sh -c "echo '127.0.0.1       localhost' > /etc/hosts"
 ##echo file, sudo echo file in
-sudo /bin/sh -c 'echo "127.0.1.1       $username-1" >> /etc/hosts'
+sudo /bin/sh -c "echo '127.0.1.1       $username-1' >> /etc/hosts"
 
 echo "Installing necessary software..."
 sudo apt-get -y install mpg321
@@ -48,37 +48,37 @@ echo "Building scripts..."
 cd /home/$username
 mkdir scripts
 cd /home/$username/scripts
-sudo /bin/sh -c 'echo "mpg321 -Z /home/$username/sounds/*.mp3" > weekday.sh'
+sudo /bin/sh -c "echo 'mpg321 -Z /home/$username/sounds/*.mp3' > weekday.sh"
 sudo chmod uga+rwx weekday.sh
-sudo /bin/sh -c 'echo "mpg321 -Z /home/$username/sounds/z_*.mp3" > weekend.sh'
+sudo /bin/sh -c "echo 'mpg321 -Z /home/$username/sounds/z_*.mp3' > weekend.sh"
 sudo chmod uga+rwx weekend.sh
-sudo /bin/sh -c 'echo "pkill mpg321" > clockout.sh'
+sudo /bin/sh -c "echo 'pkill mpg321' > clockout.sh"
 sudo chmod uga+rwx clockout.sh
 
 #Chron Jobs: Setup as root
 echo "Setting cron jobs..."
-sudo /bin/sh -c 'echo "
+sudo /bin/sh -c "echo '
 0 9 * * 1,2,3,4,5 unbird /home/$username/scripts/weekday.sh
-" > /etc/cron.d/weekday'
-sudo /bin/sh -c 'echo "
+' > /etc/cron.d/weekday"
+sudo /bin/sh -c "echo '
 0 9 * * 0,6 admin /home/$username/scripts/weekend.sh
-" > /etc/cron.d/weekend'
-sudo /bin/sh -c 'echo "
+' > /etc/cron.d/weekend"
+sudo /bin/sh -c "echo '
 0 17 * * * root home/$username/scripts/clockout.sh
-" > /etc/cron.d/clockout'
+' > /etc/cron.d/clockout"
 
 # Samba setup - help from: http://raspberrywebserver.com/serveradmin/share-your-raspberry-pis-files-and-folders-across-a-network.html
 echo "Setting up Samba share..."
 ##echo file, sudo echo file in
-sudo /bin/sh -c 'echo "[rpi-unbird/sounds]" >> /etc/samba/smb.conf'
-sudo /bin/sh -c 'echo "   comment= Where The Sounds Are Kept" >> /etc/samba/smb.conf'
-sudo /bin/sh -c 'echo "   path=/home/$username/sounds" >> /etc/samba/smb.conf'
-sudo /bin/sh -c 'echo "   browseable=Yes" >> /etc/samba/smb.conf'
-sudo /bin/sh -c 'echo "   writeable=Yes" >> /etc/samba/smb.conf'
-sudo /bin/sh -c 'echo "   only guest=no" >> /etc/samba/smb.conf'
-sudo /bin/sh -c 'echo "   create mask=0777" >> /etc/samba/smb.conf'
-sudo /bin/sh -c 'echo "   directory mask=0777" >> /etc/samba/smb.conf'
-sudo /bin/sh -c 'echo "   public=no" >> /etc/samba/smb.conf'
+sudo /bin/sh -c "echo '[$username/sounds]' >> /etc/samba/smb.conf"
+sudo /bin/sh -c "echo '   comment= Where The Sounds Are Kept' >> /etc/samba/smb.conf"
+sudo /bin/sh -c "echo '   path=/home/$username/sounds' >> /etc/samba/smb.conf"
+sudo /bin/sh -c "echo '   browseable=Yes' >> /etc/samba/smb.conf"
+sudo /bin/sh -c "echo '   writeable=Yes' >> /etc/samba/smb.conf"
+sudo /bin/sh -c "echo '   only guest=no' >> /etc/samba/smb.conf"
+sudo /bin/sh -c "echo '   create mask=0777' >> /etc/samba/smb.conf"
+sudo /bin/sh -c "echo '   directory mask=0777' >> /etc/samba/smb.conf"
+sudo /bin/sh -c "echo '   public=no' >> /etc/samba/smb.conf"
 
 sudo smbpasswd -a $username
 
