@@ -40,7 +40,7 @@ wget https://github.com/sunshine-cid/rpi-unbird/raw/master/hardcore.zip
 wget https://github.com/sunshine-cid/rpi-unbird/raw/master/silence.zip
 wget https://github.com/sunshine-cid/rpi-unbird/raw/master/z_listening.zip
 echo "Extracting sounds..."
-sudo unzip *.zip
+sudo unzip '*.zip'
 sudo chmod 0777 /home/$username/sounds
 
 #Scripts
