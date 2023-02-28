@@ -1,7 +1,10 @@
 #!/bin/bash
 # 02.27.23 
 # Currently this file assumes a fresh and updated rasbaian install with appropriate networking configured.
-# Currently permissions are too open, need to correct
+#TODO: Correct permissions and use of sudo
+#TODO: Add flag to customize listening type
+#TODO: Add flag to customize Samba
+#TODO: Add flag to customize schedule
 
 #Read potential command line flags and set variables
 #Current flags:
@@ -71,7 +74,7 @@ sudo /bin/sh -c "echo '
 echo "Setting up Samba share..."
 ##echo file, sudo echo file in
 sudo /bin/sh -c "echo '[$username/sounds]' >> /etc/samba/smb.conf"
-sudo /bin/sh -c "echo '   comment= Where The Sounds Are Kept' >> /etc/samba/smb.conf"
+sudo /bin/sh -c "echo '   comment= Where The rpi-unbird Sounds Are Kept' >> /etc/samba/smb.conf"
 sudo /bin/sh -c "echo '   path=/home/$username/sounds' >> /etc/samba/smb.conf"
 sudo /bin/sh -c "echo '   browseable=Yes' >> /etc/samba/smb.conf"
 sudo /bin/sh -c "echo '   writeable=Yes' >> /etc/samba/smb.conf"
