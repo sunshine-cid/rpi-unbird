@@ -19,7 +19,7 @@ done
 # if username is null set it to current user
 if [ -z "$username" ]; then username="$USER"; fi
 
-echo "Username set as: $username";
+echo "User for install set to: $username";
 
 echo "Set permissions for sudo and audio for username"
 sudo usermod -a -G audio,sudo $username
@@ -27,7 +27,6 @@ sudo usermod -a -G audio,sudo $username
 echo "Set hostname as $username-1 and set in /etc/hosts"
 sudo hostnamectl set-hostname "$username-1" --pretty
 sudo /bin/sh -c "echo '127.0.0.1       localhost' > /etc/hosts"
-##echo file, sudo echo file in
 sudo /bin/sh -c "echo '127.0.1.1       $username-1' >> /etc/hosts"
 
 echo "Installing necessary software..."
@@ -35,28 +34,28 @@ sudo apt-get -y install mpg321
 sudo apt-get -y install samba samba-common-bin
 
 # Download and extract sounds
+mkdir /home/$username/sounds
+if [[ -f "hardcore.zip" || -f "silence.zip" || -f "z_listening.zip"]]; then
+echo "At least one sound file exists. Skipping downloading..."
+else
 echo "Downloading sounds..."
-cd /home/$username/
-mkdir ./sounds
-cd sounds
 wget https://github.com/sunshine-cid/rpi-unbird/raw/master/hardcore.zip
 wget https://github.com/sunshine-cid/rpi-unbird/raw/master/silence.zip
 wget https://github.com/sunshine-cid/rpi-unbird/raw/master/z_listening.zip
+fi
 echo "Extracting sounds..."
-sudo unzip '*.zip'
+sudo unzip '*.zip' -d /home/$username/sounds
 sudo chmod 0777 /home/$username/sounds
 
 #Scripts
 echo "Building scripts..."
-cd /home/$username
-mkdir scripts
-cd /home/$username/scripts
-sudo /bin/sh -c "echo 'mpg321 -Z /home/$username/sounds/*.mp3' > weekday.sh"
-sudo chmod uga+rwx weekday.sh
-sudo /bin/sh -c "echo 'mpg321 -Z /home/$username/sounds/z_*.mp3' > weekend.sh"
-sudo chmod uga+rwx weekend.sh
-sudo /bin/sh -c "echo 'pkill mpg321' > clockout.sh"
-sudo chmod uga+rwx clockout.sh
+mkdir /home/$username/scripts
+sudo /bin/sh -c "echo 'mpg321 -Z /home/$username/sounds/*.mp3' > /home/$username/scripts/weekday.sh"
+sudo chmod uga+rwx /home/$username/scripts/weekday.sh
+sudo /bin/sh -c "echo 'mpg321 -Z /home/$username/sounds/z_*.mp3' > /home/$username/scripts/weekend.sh"
+sudo chmod uga+rwx /home/$username/scripts/weekend.sh
+sudo /bin/sh -c "echo 'pkill mpg321' > /home/$username/scripts/clockout.sh"
+sudo chmod uga+rwx /home/$username/scripts/clockout.sh
 
 #Chron Jobs: Setup as root
 echo "Setting cron jobs..."
