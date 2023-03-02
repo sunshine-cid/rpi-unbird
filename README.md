@@ -4,7 +4,7 @@ Birds often damage property and may pose a health hazard. They are often, rightl
 
 At it's most fundamental level an rpi-unbird device can be considered an electronic game call device/speaker combo. Hunting birds is illegal in many juristictions. Be sure you know the laws in your area.
 
-Instructions for build
+Instructions for build - <sub>Difficulty: Semi-Moderate (requires experience building and configuring a raspberry pi)</sub>
 ----------
 Items Required:
 
@@ -16,8 +16,12 @@ Power Source (a battery bank or appropriate wall plugs)
 
 Appropriate cords
 
+Install and configure your OS (Rasbian). I strongly recommend setting your time and time zone correctly so the scripts will execute at appropriate and intended times. 
 
 // Instructions for installation
 
+If you don't want to include any set of sounds in the install, just delete the zip file. Though I strongly recommend keeping the silence.zip as continual squaking and screaming for 8 hours a day is unrealistic and pretty disturbing. And also if you want to include additional sounds include a zip file of the MP3's. MP3's which have a 'z_' prefix will be included in weekday AND weekend e"z_"listening scripts.
+
 // credits
 
+Thank you to https://raspberrywebserver.com/serveradmin/share-your-raspberry-pis-files-and-folders-across-a-network.html for their invaluable help configuring SAMBA.
