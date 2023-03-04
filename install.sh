@@ -43,7 +43,7 @@ sudo apt-get -y install samba samba-common-bin
 
 # Download and extract sounds
 mkdir /home/$username/sounds
-if [[ -f "hardcore.zip" || -f "silence.zip" || -f "z_listening.zip"]]; then
+if [ -f "hardcore.zip" ] || [ -f "silence.zip" ]  || [ -f "z_listening.zip" ]; then
 echo "At least one sound file exists. Skipping downloading..."
 else
 echo "Downloading sounds..."
