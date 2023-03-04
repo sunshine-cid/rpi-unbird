@@ -1,27 +1,35 @@
 #!/bin/bash
-# 02.27.23 
+# 03.04.23 
 # Currently this file assumes a fresh and updated rasbaian install with appropriate networking configured.
 #TODO: Correct permissions and use of sudo
 #TODO: Add flag to customize listening type
 #TODO: Add flag to customize Samba
-#TODO: Add flag to customize schedule
 
 #Read potential command line flags and set variables
 #Current flags:
-#-u username - set username to build setup under, if empty use current user. Username will end up in sudo and audio groups
-
-while getopts u: flag
+#-u username - set username to build setup under. Username will end up in sudo and audio groups. Default is current user
+#-st starttime - set time of day to begin playing sounds (24-hour format). Default is 9am (9)
+#-et starttime - set time of day to end playing sounds (24-hour format). Default is 5pm (17)
+while getopts u:st:et: flag
 do
     case "${flag}" in
         u) username=${OPTARG};;
+        st) starttime=${OPTARG};;
+        et) endtime=${OPTARG};;
         esac
 done
 # if username is null set it to current user
 if [ -z "$username" ]; then username="$USER"; fi
+# if starttime is null set it to 9am
+if [ -z "$starttime" ]; then starttime="9"; fi
+#if endtime is null set it to 5pm
+if [ -z "$endtime" ]; then endtime="17"; fi
+
 
 echo "User for install set to: $username";
 
 echo "Set permissions for sudo and audio for username"
+#check if sudo group is necessary
 sudo usermod -a -G audio,sudo $username
 
 echo "Set hostname as $username-1 and set in /etc/hosts"
@@ -44,8 +52,7 @@ wget https://github.com/sunshine-cid/rpi-unbird/raw/master/silence.zip
 wget https://github.com/sunshine-cid/rpi-unbird/raw/master/z_listening.zip
 fi
 echo "Extracting sounds..."
-## Check if sudo is necessary here
-sudo unzip '*.zip' -d /home/$username/sounds
+unzip '*.zip' -d /home/$username/sounds
 sudo chmod 0774 /home/$username/sounds
 
 #Scripts
@@ -60,13 +67,13 @@ sudo chmod 0774 /home/$username/scripts/*.sh
 #Chron Jobs: Setup as root
 echo "Setting cron jobs..."
 sudo /bin/sh -c "echo '
-0 9 * * 1,2,3,4,5 $username /home/$username/scripts/weekday.sh
+0 $starttime * * 1,2,3,4,5 $username /home/$username/scripts/weekday.sh
 ' > /etc/cron.d/rpi-unbird-weekday"
 sudo /bin/sh -c "echo '
-0 9 * * 0,6 $username /home/$username/scripts/weekend.sh
+0 $starttime * * 0,6 $username /home/$username/scripts/weekend.sh
 ' > /etc/cron.d/rpi-unbird-weekend"
 sudo /bin/sh -c "echo '
-0 17 * * * $username home/$username/scripts/clockout.sh
+0 $endtime * * * $username home/$username/scripts/clockout.sh
 ' > /etc/cron.d/rpi-unbird-clockout"
 
 # Samba setup - help from: http://raspberrywebserver.com/serveradmin/share-your-raspberry-pis-files-and-folders-across-a-network.html
