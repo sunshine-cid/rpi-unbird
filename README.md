@@ -20,6 +20,31 @@ Install and configure your OS (Rasbian). I strongly recommend setting your time 
 
 // Instructions for installation
 
+Download either via git or wget:
+
+>git clone https://github.com/sunshine-cid/rpi-unbird.git
+
+or
+
+>wget https://github.com/sunshine-cid/rpi-unbird/raw/master/install.sh
+
+then run:
+
+>bash install.sh
+
+Command line flags available:
+
+-u username - set username to build setup under. Username will end up in sudo and audio groups. Default is current user ($USER)
+
+-s starttime - set time of day to begin playing sounds (24-hour format). Default is 9am (9)
+
+-e starttime - set time of day to end playing sounds (24-hour format). Default is 5pm (17)
+
+-b sambaenable - d to diable samba setup, e to enable samba setup. Default is enable (e)
+
+-n installnumber - used for setting the installation number in hostname and hosts. Default is 1
+
+
 If you don't want to include any set of sounds in the install, just delete the zip file. Though I strongly recommend keeping the silence.zip as continual squaking and screaming for 8 hours a day is unrealistic and pretty disturbing. And also if you want to include additional sounds include a zip file of the MP3's. MP3's which have a 'z_' prefix will be included in weekday AND weekend e"z_"listening scripts.
 
 // credits
