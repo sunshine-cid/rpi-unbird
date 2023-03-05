@@ -73,7 +73,7 @@ sudo /bin/sh -c "echo '
 0 $starttime * * 0,6 $username /home/$username/scripts/weekend.sh
 ' > /etc/cron.d/rpi-unbird-weekend"
 sudo /bin/sh -c "echo '
-0 $endtime * * * $username home/$username/scripts/clockout.sh
+0 $endtime * * * $username /home/$username/scripts/clockout.sh
 ' > /etc/cron.d/rpi-unbird-clockout"
 
 # Samba setup - help from: http://raspberrywebserver.com/serveradmin/share-your-raspberry-pis-files-and-folders-across-a-network.html
