@@ -10,13 +10,15 @@
 #-s starttime - set time of day to begin playing sounds (24-hour format). Default is 9am (9)
 #-e starttime - set time of day to end playing sounds (24-hour format). Default is 5pm (17)
 #-b sambaenable - e to enable samba setup, d to diable samba setup. Default is enable (e)
-while getopts u:s:e:b: flag
+#-n installnumber - used for setting the installation number in hostname and hosts. Default is 1
+while getopts u:s:e:b:n: flag
 do
     case "${flag}" in
         u) username=${OPTARG};;
         s) starttime=${OPTARG};;
         e) endtime=${OPTARG};;
         b) sambaenable=${OPTARG};;
+        n) installnumber=${OPTARG};;
         esac
 done
 # if username is null set it to current user
@@ -27,11 +29,14 @@ if [ -z "$starttime" ]; then starttime="9"; fi
 if [ -z "$endtime" ]; then endtime="17"; fi
 #if sambaenable is null then set it to enabled
 if [ -z "$sambaenable" ]; then sambaenable="e"; fi
+#if installnumber is null then set it to 1
+if [ -z "$installnumber" ]; then installnumber="1"; fi
 
 echo "User for install set to: $username";
 echo "Start time for cron jobs is set to $starttime 00 daily"
 echo "End time for cron jobs is set to $endtime 00 daily"
 echo "Samba enabled is set to $sambaenable"
+echo "hostname will be set to $username-$installnumber"
 
 echo "Set permissions for sudo and audio for username"
 ##Check if sudo group is necessary
@@ -80,10 +85,10 @@ echo "Samba disabled..."
 else
 # Samba setup - help from: http://raspberrywebserver.com/serveradmin/share-your-raspberry-pis-files-and-folders-across-a-network.html
 echo "Samba enabled..."
-echo "Set hostname as $username-1 and set in /etc/hosts"
-sudo hostnamectl set-hostname "$username-1" --pretty
+echo "Set hostname as $username-$installnumber and set in /etc/hosts"
+sudo hostnamectl set-hostname "$username-$installnumber" --pretty
 sudo /bin/sh -c "echo '127.0.0.1       localhost' > /etc/hosts"
-sudo /bin/sh -c "echo '127.0.1.1       $username-1' >> /etc/hosts"
+sudo /bin/sh -c "echo '127.0.1.1       $username-$installnumber' >> /etc/hosts"
 echo "Installing Samba..."
 sudo apt-get -y install samba samba-common-bin
 echo "Setting up Samba sharing..."
