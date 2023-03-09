@@ -2,7 +2,7 @@
 # 03.09.23 
 # Currently this file assumes a fresh and updated rasbaian install with appropriate networking configured.
 #TODO: Correct permissions and use of sudo (TESTING)
-#TODO: Figure out hostname malfunction
+#TODO: Figure out hostname malfunction (TESTING)
 #TODO: Add flag to customize listening type
 
 #Read potential command line flags and set variables
@@ -92,15 +92,17 @@ echo "Samba disabled..."
 else
 # Samba setup - help from: http://raspberrywebserver.com/serveradmin/share-your-raspberry-pis-files-and-folders-across-a-network.html
 echo "Samba enabled..."
-echo "Set hostname as $username-$installnumber and set in /etc/hosts"
-sudo hostnamectl set-hostname "$username-$installnumber" --pretty
+echo "Set hostname as $username-$installnumber and set in /etc/hosts and hostname"
+sudo /bin/sh -c "echo '$username-$installnumber' > /etc/hostname"
+sudo hostnamectl set-hostname "$username-$installnumber"
 sudo /bin/sh -c "echo '127.0.0.1       localhost' > /etc/hosts"
 sudo /bin/sh -c "echo '127.0.1.1       $username-$installnumber' >> /etc/hosts"
+sudo systemctl restart systemd-hostnamed
 echo "Installing Samba..."
 sudo apt-get -y install samba samba-common-bin
 echo "Setting up Samba sharing..."
 ##echo file, sudo echo file in
-sudo /bin/sh -c "echo '[$username/sounds]' >> /etc/samba/smb.conf"
+sudo /bin/sh -c "echo '[$username-$installnumber/sounds]' >> /etc/samba/smb.conf"
 sudo /bin/sh -c "echo '   comment= Where The rpi-unbird Sounds Are Kept' >> /etc/samba/smb.conf"
 sudo /bin/sh -c "echo '   path=/home/$username/sounds' >> /etc/samba/smb.conf"
 sudo /bin/sh -c "echo '   browseable=Yes' >> /etc/samba/smb.conf"
