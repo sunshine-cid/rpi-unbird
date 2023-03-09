@@ -40,7 +40,8 @@ echo "hostname will be set to $username-$installnumber"
 
 echo "Set permissions for sudo and audio for username"
 ##Check if sudo group is necessary
-sudo usermod -a -G audio,sudo $username
+#sudo usermod -a -G audio,sudo $username
+sudo usermod -a -G audio $username
 
 echo "Installing mpg321 software..."
 sudo apt-get -y install mpg321
