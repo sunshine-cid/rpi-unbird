@@ -48,6 +48,7 @@ sudo apt-get -y install mpg321
 
 # Download and extract sounds
 sudo mkdir /home/$username/sounds
+echo "Check for zips of sound files..."
 if [ -f "hardcore.zip" ] || [ -f "silence.zip" ]  || [ -f "z_listening.zip" ]; then
 echo "At least one sound file exists. Skipping downloading..."
 else
@@ -57,7 +58,7 @@ wget https://github.com/sunshine-cid/rpi-unbird/raw/master/silence.zip
 wget https://github.com/sunshine-cid/rpi-unbird/raw/master/z_listening.zip
 fi
 echo "Extracting sounds..."
-unzip '*.zip' -d /home/$username/sounds
+sudo unzip '*.zip' -d /home/$username/sounds
 sudo chown $username:$username /home/$username/sounds/*.*
 sudo chown $username:$username /home/$username/sounds
 sudo chmod 0774 /home/$username/sounds
