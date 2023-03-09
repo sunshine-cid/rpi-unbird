@@ -2,6 +2,7 @@
 # 03.09.23 
 # Currently this file assumes a fresh and updated rasbaian install with appropriate networking configured.
 #TODO: Correct permissions and use of sudo (TESTING)
+#TODO: Figure out hostname malfunction
 #TODO: Add flag to customize listening type
 
 #Read potential command line flags and set variables
