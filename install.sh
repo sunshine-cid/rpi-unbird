@@ -66,9 +66,9 @@ sudo chmod 0774 /home/$username/sounds
 #Scripts
 echo "Building scripts..."
 sudo mkdir /home/$username/scripts
-echo 'mpg321 -Z /home/$username/sounds/*.mp3' > /home/$username/scripts/weekday.sh
-echo 'mpg321 -Z /home/$username/sounds/z_*.mp3' > /home/$username/scripts/weekend.sh
-echo 'pkill mpg321' > /home/$username/scripts/clockout.sh
+sudo /bin/sh -c "echo 'mpg321 -Z /home/$username/sounds/*.mp3' > /home/$username/scripts/weekday.sh"
+sudo /bin/sh -c "echo 'mpg321 -Z /home/$username/sounds/z_*.mp3' > /home/$username/scripts/weekend.sh"
+sudo /bin/sh -c "echo 'pkill mpg321' > /home/$username/scripts/clockout.sh"
 sudo chown $username:$username /home/$username/scripts/*.sh
 sudo chown $username:$username /home/$username/scripts
 sudo chmod 0774 /home/$username/scripts/*.sh
