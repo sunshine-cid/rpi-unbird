@@ -1,7 +1,7 @@
 #!/bin/bash
-# 03.04.23 
+# 03.09.23 
 # Currently this file assumes a fresh and updated rasbaian install with appropriate networking configured.
-#TODO: Correct permissions and use of sudo
+#TODO: Correct permissions and use of sudo (TESTING)
 #TODO: Add flag to customize listening type
 
 #Read potential command line flags and set variables
@@ -38,7 +38,7 @@ echo "End time for cron jobs is set to $endtime 00 daily"
 echo "Samba enabled is set to $sambaenable"
 echo "hostname will be set to $username-$installnumber"
 
-echo "Set permissions for sudo and audio for username"
+echo "Set group for audio for username"
 ##Check if sudo group is necessary
 #sudo usermod -a -G audio,sudo $username
 sudo usermod -a -G audio $username
@@ -47,7 +47,7 @@ echo "Installing mpg321 software..."
 sudo apt-get -y install mpg321
 
 # Download and extract sounds
-mkdir /home/$username/sounds
+sudo mkdir /home/$username/sounds
 if [ -f "hardcore.zip" ] || [ -f "silence.zip" ]  || [ -f "z_listening.zip" ]; then
 echo "At least one sound file exists. Skipping downloading..."
 else
@@ -58,15 +58,19 @@ wget https://github.com/sunshine-cid/rpi-unbird/raw/master/z_listening.zip
 fi
 echo "Extracting sounds..."
 unzip '*.zip' -d /home/$username/sounds
+sudo chown $username:$username /home/$username/sounds/*.*
+sudo chown $username:$username /home/$username/sounds
 sudo chmod 0774 /home/$username/sounds
+
 
 #Scripts
 echo "Building scripts..."
-mkdir /home/$username/scripts
+sudo mkdir /home/$username/scripts
 echo 'mpg321 -Z /home/$username/sounds/*.mp3' > /home/$username/scripts/weekday.sh
 echo 'mpg321 -Z /home/$username/sounds/z_*.mp3' > /home/$username/scripts/weekend.sh
 echo 'pkill mpg321' > /home/$username/scripts/clockout.sh
 sudo chown $username:$username /home/$username/scripts/*.sh
+sudo chown $username:$username /home/$username/scripts
 sudo chmod 0774 /home/$username/scripts/*.sh
 
 #Chron Jobs: Setup as root
