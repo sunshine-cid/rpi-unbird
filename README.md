@@ -4,7 +4,7 @@ Birds often damage property and may pose a health hazard. They are often, rightl
 
 At it's most fundamental level an rpi-unbird device can be considered an electronic game call device/speaker combo. Hunting birds is illegal in many juristictions. Be sure you know the laws in your area.
 
-Instructions for build - <sub>Difficulty: Semi-Moderate (requires experience building and configuring a raspberry pi)</sub>
+Instructions for build - <sub>Difficulty: Semi-Easy (must build and configuring a raspberry pi)</sub>
 ----------
 Items Required:
 
@@ -34,7 +34,7 @@ then run:
 
 Command line flags available:
 
--u username - set username to build setup under. Username will end up in sudo and audio groups. Default is current user ($USER)
+-u username - set username to build setup under /home/username. Default is current user ($USER)
 
 -s starttime - set time of day to begin playing sounds (24-hour format). Default is 9am (9)
 
