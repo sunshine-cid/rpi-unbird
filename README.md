@@ -20,17 +20,16 @@ Install and configure your OS (Rasbian). I strongly recommend setting your time 
 
 // Instructions for installation
 
-Download either via git or wget:
+Download either via git or wget and install:
 
 >git clone https://github.com/sunshine-cid/rpi-unbird.git
+>cd ./rpi-unbird
+>sudo bash install.sh
 
 or
 
 >wget https://github.com/sunshine-cid/rpi-unbird/raw/master/install.sh
-
-then run:
-
->bash install.sh
+>sudo bash install.sh
 
 Command line flags available:
 
@@ -44,8 +43,10 @@ Command line flags available:
 
 -n installnumber - used for setting the installation number in hostname and hosts. Default is 1
 
+How the schedule works:
 
-If you don't want to include any set of sounds in the install, just delete the zip file. Though I strongly recommend keeping the silence.zip as continual squaking and screaming for 8 hours a day is unrealistic and pretty disturbing. And also if you want to include additional sounds include a zip file of the MP3's. MP3's which have a 'z_' prefix will be included in weekday AND weekend e"z_"listening scripts.
+Weekdays play all the sound packs. Weekends play only sounds beginning with a 'z_' prefix. You can use these guidelines to alter the behavior of what plays when. If you don't want to include any set of sounds in the install, just delete the zip file. Though I strongly recommend keeping the silence.zip as continual squaking and screaming for 8 hours a day is unrealistic and pretty disturbing. 
+And also if you want to include additional sounds include a zip file of the MP3's. MP3's which have a 'z_' prefix will be included in weekday AND weekend e"z_"listening scripts.
 
 // credits
 
