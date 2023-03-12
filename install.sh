@@ -1,8 +1,6 @@
 #!/bin/bash
-# 03.09.23 
+# 03.12.23 
 # Currently this file assumes a fresh and updated rasbaian install with appropriate networking configured.
-#TODO: Correct permissions and use of sudo (TESTING)
-#TODO: Figure out hostname malfunction (TESTING)
 #TODO: Add flag to customize listening type
 
 #Read potential command line flags and set variables
@@ -33,21 +31,22 @@ if [ -z "$sambaenable" ]; then sambaenable="e"; fi
 #if installnumber is null then set it to 1
 if [ -z "$installnumber" ]; then installnumber="1"; fi
 
-echo "User for install set to: $username";
+echo
+echo "User for install set to: $username"
 echo "Start time for cron jobs is set to $starttime 00 daily"
 echo "End time for cron jobs is set to $endtime 00 daily"
 echo "Samba enabled is set to $sambaenable"
 echo "hostname will be set to $username-$installnumber"
+echo
 
-echo "Set group for audio for username"
-##Check if sudo group is necessary
-#sudo usermod -a -G audio,sudo $username
+echo "Set group to audio for username..."
 sudo usermod -a -G audio $username
 
 echo "Installing mpg321 software..."
 sudo apt-get -y install mpg321
 
-# Download and extract sounds
+#Sounds
+echo "Setup sounds..."
 sudo mkdir /home/$username/sounds
 echo "Check for zips of sound files..."
 if [ -f "hardcore.zip" ] || [ -f "silence.zip" ]  || [ -f "z_listening.zip" ]; then
@@ -92,7 +91,7 @@ echo "Samba disabled..."
 else
 # Samba setup - help from: http://raspberrywebserver.com/serveradmin/share-your-raspberry-pis-files-and-folders-across-a-network.html
 echo "Samba enabled..."
-echo "Set hostname as $username-$installnumber and set in /etc/hosts and hostname"
+echo "Set hostname as $username-$installnumber and set in /etc/hosts and hostname..."
 sudo /bin/sh -c "echo '$username-$installnumber' > /etc/hostname"
 sudo hostnamectl set-hostname "$username-$installnumber"
 sudo /bin/sh -c "echo '127.0.0.1       localhost' > /etc/hosts"
@@ -101,7 +100,6 @@ sudo systemctl restart systemd-hostnamed
 echo "Installing Samba..."
 sudo apt-get -y install samba samba-common-bin
 echo "Setting up Samba sharing..."
-##echo file, sudo echo file in
 sudo /bin/sh -c "echo '[$username-$installnumber/sounds]' >> /etc/samba/smb.conf"
 sudo /bin/sh -c "echo '   comment= Where The rpi-unbird Sounds Are Kept' >> /etc/samba/smb.conf"
 sudo /bin/sh -c "echo '   path=/home/$username/sounds' >> /etc/samba/smb.conf"
