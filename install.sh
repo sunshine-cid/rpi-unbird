@@ -115,4 +115,4 @@ echo "Set Samba password..."
 sudo smbpasswd -a $username
 fi
 
-echo "Done."
+echo "Done. Please reboot."
