@@ -20,19 +20,19 @@ Install and configure your OS (Rasbian). I strongly recommend setting your time 
 
 // Instructions for installation
 
-Download either via git or wget and install:
+Download either via git or wget and install (installing user MUST have sudo privelages):
 
 >git clone https://github.com/sunshine-cid/rpi-unbird.git
 
 >cd ./rpi-unbird
 
->sudo bash install.sh
+>bash install.sh
 
 or
 
 >wget https://github.com/sunshine-cid/rpi-unbird/raw/master/install.sh
 
->sudo bash install.sh
+>bash install.sh
 
 Command line flags available:
 
