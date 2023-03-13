@@ -45,6 +45,14 @@ sudo usermod -a -G audio $username
 echo "Installing mpg321 software..."
 sudo apt-get -y install mpg321
 
+#Check if user directory exists in home, if not create it
+if [ ! -d "/home/$username/" ]; then
+  echo "user folder does not exist in /home/, creating it."
+  sudo mkdir /home/$username
+  sudo chown $username:$username /home/$username
+  sudo chmod 0774 /home/$username
+fi
+
 #Sounds
 echo "Setup sounds..."
 sudo mkdir /home/$username/sounds
