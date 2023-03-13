@@ -1,5 +1,5 @@
 #!/bin/bash
-# 03.12.23 
+# 03.13.23 
 # Currently this file assumes a fresh and updated rasbaian install with appropriate networking configured.
 #TODO: Add flag to customize listening type
 
