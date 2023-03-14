@@ -18,19 +18,20 @@ Appropriate cords
 
 Install and configure your OS (Rasbian). I strongly recommend setting your time and time zone correctly so the scripts will execute at appropriate and intended times. 
 
-// Instructions for installation
+Instructions for Installation - <sub>Assumes correct timezone and networking configured</sub>
+----------
 
 Download either via git or wget and install (installing user MUST have sudo privelages):
 
->git clone https://github.com/sunshine-cid/rpi-unbird.git
-
->cd ./rpi-unbird
+>wget https://github.com/sunshine-cid/rpi-unbird/raw/master/install.sh
 
 >bash install.sh
 
 or
 
->wget https://github.com/sunshine-cid/rpi-unbird/raw/master/install.sh
+>git clone https://github.com/sunshine-cid/rpi-unbird.git
+
+>cd ./rpi-unbird
 
 >bash install.sh
 
@@ -51,6 +52,7 @@ How the schedule works:
 Weekdays play all the sound packs. Weekends play only sounds beginning with a 'z_' prefix. You can use these guidelines to alter the behavior of what plays when. If you don't want to include any set of sounds in the install, just delete the zip file. Though I strongly recommend keeping the silence.zip as continual squaking and screaming for 8 hours a day is unrealistic and pretty disturbing. 
 And also if you want to include additional sounds include a zip file of the MP3's. MP3's which have a 'z_' prefix will be included in weekday AND weekend e"z_"listening scripts.
 
-// credits
+Credits
+----------
 
 Thank you to https://raspberrywebserver.com/serveradmin/share-your-raspberry-pis-files-and-folders-across-a-network.html for their invaluable help configuring SAMBA.
