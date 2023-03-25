@@ -1,9 +1,11 @@
 #!/bin/bash
-# 03.13.23 
+# 03.25.23 
 # Currently this file assumes a fresh and updated rasbaian install with appropriate networking configured.
 #TODO: Add flag to customize listening type
 
-#Read potential command line flags and set variables
+#rpi-unbird/install.sh - an Anti-Nesting/Pro-Predatory Bird project. Installs mpg321, downloads MP3's, creates scripts, configures them into cron, and installs/configures SAMBA.
+
+#Read potential command line flags and set variables.
 #Current flags:
 #-u username - set username to build setup under. Username will end up in sudo and audio groups. Default is current user ($USER)
 #-s starttime - set time of day to begin playing sounds (24-hour format). Default is 9am (9)
@@ -20,17 +22,18 @@ do
         n) installnumber=${OPTARG};;
         esac
 done
-# if username is null set it to current user
+#If username is null set it to current user
 if [ -z "$username" ]; then username="$USER"; fi
-# if starttime is null set it to 9am
+#If starttime is null set it to 9am
 if [ -z "$starttime" ]; then starttime="9"; fi
-#if endtime is null set it to 5pm
+#If endtime is null set it to 5pm
 if [ -z "$endtime" ]; then endtime="17"; fi
-#if sambaenable is null then set it to enabled
+#If sambaenable is null then set it to enabled
 if [ -z "$sambaenable" ]; then sambaenable="e"; fi
-#if installnumber is null then set it to 1
+#If installnumber is null then set it to 1
 if [ -z "$installnumber" ]; then installnumber="1"; fi
 
+#Output command line option settings
 echo
 echo "User for install set to: $username"
 echo "Start time for cron jobs is set to $starttime 00 daily"
@@ -39,13 +42,15 @@ echo "Samba enabled is set to $sambaenable"
 echo "hostname will be set to $username-$installnumber"
 echo
 
+#Adds $username to the group which allows audio playing
 echo "Set group to audio for username..."
 sudo usermod -a -G audio $username
 
+#Install mpg321
 echo "Installing mpg321 software..."
 sudo apt-get -y install mpg321
 
-#Check if user directory exists in home, if not create it
+#Check if user directory exists in home, if not create it. Set proper file permissions and owner.
 if [ ! -d "/home/$username/" ]; then
   echo "user folder does not exist in /home/, creating it."
   sudo mkdir /home/$username
@@ -53,7 +58,7 @@ if [ ! -d "/home/$username/" ]; then
   sudo chmod 0774 /home/$username
 fi
 
-#Sounds
+#Sounds - make sounds directory, check if at least 1 zip file exists and extract it. If no zip files exist download and extract them all. Set proper file permissions.
 echo "Setup sounds..."
 sudo mkdir /home/$username/sounds
 echo "Check for zips of sound files..."
@@ -72,7 +77,7 @@ sudo chown $username:$username /home/$username/sounds
 sudo chmod 0774 /home/$username/sounds
 
 
-#Scripts
+#Scripts - Create scripts which will be used by cron. Set proper file permissions and owner.
 echo "Building scripts..."
 sudo mkdir /home/$username/scripts
 sudo /bin/sh -c "echo 'mpg321 -Z /home/$username/sounds/*.mp3' > /home/$username/scripts/weekday.sh"
@@ -82,7 +87,7 @@ sudo chown $username:$username /home/$username/scripts/*.sh
 sudo chown $username:$username /home/$username/scripts
 sudo chmod 0774 /home/$username/scripts/*.sh
 
-#Chron Jobs: Setup as root
+#Chron Jobs - Setup cron jobs according to schedule. Must be written as root.
 echo "Setting cron jobs..."
 sudo /bin/sh -c "echo '
 0 $starttime * * 1,2,3,4,5 $username /home/$username/scripts/weekday.sh
@@ -94,6 +99,7 @@ sudo /bin/sh -c "echo '
 0 $endtime * * * $username /home/$username/scripts/clockout.sh
 ' > /etc/cron.d/rpi-unbird-clockout"
 
+#SAMBA - If enabled set hosts and hostname according to $username-$installnumber convention, install SAMBA, append configuration for a fileshare, set SAMBA password for $username. 
 if [ "$sambaenable" = "d" ]; then
 echo "Samba disabled..."
 else
