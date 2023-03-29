@@ -12,11 +12,11 @@ RaspberryPi (or any portable/small Single Board Computer running Linux)
 
 Portable plug-in speaker
 
-Power Source (a battery bank or appropriate wall plugs)
+Power Source (a battery bank or wall plugs)
 
 Appropriate cords
 
-Install and configure your OS (Rasbian). I strongly recommend setting your time and time zone correctly so the scripts will execute at appropriate and intended times. 
+Install and configure your OS (Rasbian). I strongly recommend setting your time and time zone correctly so the scripts will execute at the intended times. 
 
 Instructions for Installation - <sub>Assumes correct timezone and networking configured</sub>
 ----------
@@ -43,7 +43,7 @@ Command line flags available:
 
 -e starttime - set time of day to end playing sounds (24-hour format). Default is 5pm (17)
 
--b sambaenable - d to diable samba setup, e to enable samba setup. Default is enable (e)
+-b sambaenable - d to disable samba setup, e to enable samba setup. Default is enable (e)
 
 -n installnumber - used for setting the installation number in hostname and hosts. Default is 1
 
