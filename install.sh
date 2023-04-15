@@ -71,12 +71,15 @@ if [ -f "hardcore.zip" ] || [ -f "silence.zip" ]  || [ -f "z_listening.zip" ]; t
 echo "At least one sound file exists. Skipping downloading..."
 else
 echo "Downloading sounds..."
-wget https://github.com/sunshine-cid/rpi-unbird/raw/master/hardcore.zip
-wget https://github.com/sunshine-cid/rpi-unbird/raw/master/silence.zip
-wget https://github.com/sunshine-cid/rpi-unbird/raw/master/z_listening.zip
+#hardcore.tar.gz
+wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=17utRjUQqxOFkhayf1sXZh-glHseM9hkY' -O hardcore.tar.gz
+#silence.tar.gz
+wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1Cj3GPME60wuc09MjoSRDZ7U7-jAp590t' -O silence.tar.gz
+#z_listening.tar.gz
+wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=11xxkFh0JgG1EOiqHwyAQ0AFWD7mNa7sF' -O z_listening.tar.gz
 fi
 echo "Extracting sounds..."
-sudo unzip '*.zip' -d /home/$username/sounds
+for filename in ./*.tar.gz; do sudo tar -xjvf $filename -C /home/$username/sounds/; done 
 sudo chown $username:$username /home/$username/sounds/*.*
 sudo chown $username:$username /home/$username/sounds
 sudo chmod 0774 /home/$username/sounds
