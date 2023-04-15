@@ -49,10 +49,12 @@ Command line flags available:
 
 How the schedule works:
 
-Weekdays play all the sound packs. Weekends play only sounds beginning with a 'z_' prefix. You can use these guidelines to alter the behavior of what plays when. If you don't want to include any set of sounds in the install, just delete the zip file. Though I strongly recommend keeping the silence.zip as continual squaking and screaming for 8 hours a day is unrealistic and pretty disturbing. 
-And also if you want to include additional sounds include a zip file of the MP3's. MP3's which have a 'z_' prefix will be included in weekday AND weekend e"z_"listening scripts.
+Weekdays play all the sound packs. Weekends play only sounds beginning with a 'z_' prefix. You can use these guidelines to alter the behavior of what plays when. If you don't want to include any set of sounds in the install, download the files seperately by copying the download portion of the code, running it, and then delete the tar.gz file you do not want to include. Though I strongly recommend keeping the silence.tar.gz as continual squaking and screaming for 8 hours a day is unrealistic and pretty disturbing. The script is setup to not download if any of the default files exist.
+And also if you want to include additional sounds include a tar.gz file of the MP3's. MP3's which have a 'z_' prefix will be included in weekday AND weekend e"z_"listening scripts.
 
 Credits
 ----------
+
+Thank you to https://chemicloud.com/kb/article/download-google-drive-files-using-wget/ for the detailed instructions regarding wget'ing files from Google Drive.
 
 Thank you to https://raspberrywebserver.com/serveradmin/share-your-raspberry-pis-files-and-folders-across-a-network.html for their invaluable help configuring SAMBA.
