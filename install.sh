@@ -1,6 +1,6 @@
 #!/bin/bash
 # 03.25.23 
-# Currently this file assumes a fresh and updated rasbaian install with appropriate networking configured.
+# Currently this file assumes a fresh and preferrably updated rasbaian install with appropriate networking and timezone configured.
 #TODO: Add flag to customize listening type
 
 #rpi-unbird/install.sh - an Anti-Nesting/Pro-Predatory Bird project. Installs mpg321, downloads MP3's, creates scripts, configures them into cron, and installs/configures SAMBA.
@@ -45,6 +45,11 @@ echo
 #Adds $username to the group which allows audio playing
 echo "Set group to audio for username..."
 sudo usermod -a -G audio $username
+
+#Update apt database, also apt-get upgrade
+echo "Run apt update and apt-get upgrade..."
+sudo apt update
+sudo apt-get -y upgrade
 
 #Install mpg321
 echo "Installing mpg321 software..."
