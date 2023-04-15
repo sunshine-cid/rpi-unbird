@@ -63,11 +63,11 @@ if [ ! -d "/home/$username/" ]; then
   sudo chmod 0774 /home/$username
 fi
 
-#Sounds - make sounds directory, check if at least 1 zip file exists and extract it. If no zip files exist download and extract them all. Set proper file permissions.
+#Sounds - make sounds directory, check if at least 1 archive file exists and extract it. If no zip files exist download and extract them all. Set proper file permissions.
 echo "Setup sounds..."
 sudo mkdir /home/$username/sounds
-echo "Check for zips of sound files..."
-if [ -f "hardcore.zip" ] || [ -f "silence.zip" ]  || [ -f "z_listening.zip" ]; then
+echo "Check for existing archives of sound files..."
+if [ -f "hardcore.tar.gz" ] || [ -f "silence.tar.gz" ]  || [ -f "z_listening.tar.gz" ]; then
 echo "At least one sound file exists. Skipping downloading..."
 else
 echo "Downloading sounds..."
