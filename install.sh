@@ -123,7 +123,7 @@ echo "Installing Samba..."
 sudo apt-get -y install samba samba-common-bin
 echo "Setting up Samba sharing..."
 #Utilizes Heredoc to append the SMABA config to /etc/samba/smb.conf
-sudo cat << SAMBA >> /etc/samba/smb.conf
+sudo /bin/sh -c "cat >>/etc/samba/smb.conf" <<SAMBA
 
 [$username-$installnumber-sounds]
    comment= Where The rpi-unbird Sounds Are Kept
