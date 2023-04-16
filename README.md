@@ -41,7 +41,7 @@ Command line flags available:
 
 -s starttime - set time of day to begin playing sounds (24-hour format). Default is 9am (9)
 
--e starttime - set time of day to end playing sounds (24-hour format). Default is 5pm (17)
+-e endtime - set time of day to end playing sounds (24-hour format). Default is 5pm (17)
 
 -b sambaenable - d to disable samba setup, e to enable samba setup. Default is enable (e)
 
