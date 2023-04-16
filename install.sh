@@ -122,15 +122,19 @@ sudo systemctl restart systemd-hostnamed
 echo "Installing Samba..."
 sudo apt-get -y install samba samba-common-bin
 echo "Setting up Samba sharing..."
-sudo /bin/sh -c "echo '[$username-$installnumber/sounds]' >> /etc/samba/smb.conf"
-sudo /bin/sh -c "echo '   comment= Where The rpi-unbird Sounds Are Kept' >> /etc/samba/smb.conf"
-sudo /bin/sh -c "echo '   path=/home/$username/sounds' >> /etc/samba/smb.conf"
-sudo /bin/sh -c "echo '   browseable=Yes' >> /etc/samba/smb.conf"
-sudo /bin/sh -c "echo '   writeable=Yes' >> /etc/samba/smb.conf"
-sudo /bin/sh -c "echo '   only guest=no' >> /etc/samba/smb.conf"
-sudo /bin/sh -c "echo '   create mask=0777' >> /etc/samba/smb.conf"
-sudo /bin/sh -c "echo '   directory mask=0777' >> /etc/samba/smb.conf"
-sudo /bin/sh -c "echo '   public=no' >> /etc/samba/smb.conf"
+#Utilizes Heredoc to append the SMABA config to /etc/samba/smb.conf
+sudo cat << SAMBA >> /etc/samba/smb.conf
+
+[$username-$installnumber-sounds]
+   comment= Where The rpi-unbird Sounds Are Kept
+   path=/home/$username/sounds
+   browseable=Yes
+   writeable=Yes
+   only guest=no
+   create mask=0777
+   directory mask=0777
+   public=no
+SAMBA
 echo "Set Samba password..."
 sudo smbpasswd -a $username
 fi
