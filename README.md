@@ -52,8 +52,21 @@ Command line flags available:
 
 How the schedule works:
 
-Weekdays play all the sound packs. Weekends play only sounds beginning with a 'z_' prefix. You can use these guidelines to alter the behavior of what plays when. If you don't want to include any set of sounds in the install, download the files seperately by copying the download portion of the code, running it, and then delete the tar.gz file you do not want to include. Though I strongly recommend keeping the silence.tar.gz as continual squaking and screaming for 8 hours a day is unrealistic and pretty disturbing. The script is setup to not download if any of the default files exist.
-And also if you want to include additional sounds include a tar.gz file of the MP3's. MP3's which have a 'z_' prefix will be included in weekday AND weekend e"z_"listening scripts.
+Weekdays (M-F) play all the sound packs. Weekends (Sa-Su) play only sounds beginning with a 'z_' prefix. You can use these guidelines to alter the behavior of what plays when. 
+
+Changing what plays:
+
+If you don't want to include any set of sounds in the install, download the files seperately by copying the download portion of the code, running it, and then delete the tar.gz file you do not want to include. Though I strongly recommend keeping the silence.tar.gz as continual squaking and screaming for 8 hours a day is unrealistic and pretty disturbing. The script is setup to not download if any of the default files exist.
+
+Adding sounds:
+
+If you want to include additional sounds pre-install include a tar.gz file of the MP3's in the same folder you execute the script in. MP3's which have a 'z_' prefix will be included in weekday AND weekend e"z_"listening cron-job scripts.
+
+The option to use SAMBA for network sharing can be enabled on the command line by adding the flag '-b e'
+
+You can use SCP to transfer files easily and securely over SSH. Instruction for using SCP can be found at: https://linuxize.com/post/how-to-use-scp-command-to-securely-transfer-files/ 
+
+Also, for windows users, WinSCP is a free utility which can be found at https://winscp.net/
 
 Credits
 ----------
