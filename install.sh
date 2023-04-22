@@ -10,7 +10,7 @@
 #-u username - set username to build setup under. Username will end up in sudo and audio groups. Default is current user ($USER)
 #-s starttime - set time of day to begin playing sounds (24-hour format). Default is 9am (9)
 #-e starttime - set time of day to end playing sounds (24-hour format). Default is 5pm (17)
-#-b sambaenable - e to enable samba setup, d to diable samba setup. Default is enable (e)
+#-b sambaenable - e to enable samba setup, d to diable samba setup. Default is enable (d)
 #-n installnumber - used for setting the installation number in hostname and hosts. Default is 1
 while getopts u:s:e:b:n: flag
 do
@@ -29,7 +29,7 @@ if [ -z "$starttime" ]; then starttime="9"; fi
 #If endtime is null set it to 5pm
 if [ -z "$endtime" ]; then endtime="17"; fi
 #If sambaenable is null then set it to enabled
-if [ -z "$sambaenable" ]; then sambaenable="e"; fi
+if [ -z "$sambaenable" ]; then sambaenable="d"; fi
 #If installnumber is null then set it to 1
 if [ -z "$installnumber" ]; then installnumber="1"; fi
 
@@ -113,12 +113,15 @@ echo "Samba disabled..."
 else
 # Samba setup - help from: http://raspberrywebserver.com/serveradmin/share-your-raspberry-pis-files-and-folders-across-a-network.html
 echo "Samba enabled..."
+
+#Set unique hostname
 echo "Set hostname as $username-$installnumber and set in /etc/hosts and hostname..."
 sudo /bin/sh -c "echo '$username-$installnumber' > /etc/hostname"
 sudo hostnamectl set-hostname "$username-$installnumber"
 sudo /bin/sh -c "echo '127.0.0.1       localhost' > /etc/hosts"
 sudo /bin/sh -c "echo '127.0.1.1       $username-$installnumber' >> /etc/hosts"
 sudo systemctl restart systemd-hostnamed
+
 echo "Installing Samba..."
 sudo apt-get -y install samba samba-common-bin
 echo "Setting up Samba sharing..."
