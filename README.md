@@ -46,7 +46,7 @@ Command line flags available:
 -u username - set username to build setup under /home/username. Default is current user ($USER)
 -s starttime - set time of day to begin playing sounds (24-hour format). Default is 9am (9)
 -e endtime - set time of day to end playing sounds (24-hour format). Default is 5pm (17)
--b sambaenable - d to disable samba setup, e to enable samba setup. Default is enable (e)
+-b sambaenable - d to disable samba setup, e to enable samba setup. Default is disabled (d)
 -n installnumber - used for setting the installation number in hostname and hosts. Default is 1
 ```
 
