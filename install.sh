@@ -1,16 +1,12 @@
 #!/bin/bash
-# 03.25.23 
-# Currently this file assumes a fresh and preferrably updated rasbaian install with appropriate networking and timezone configured.
-#TODO: Add flag to customize listening type
-
-#rpi-unbird/install.sh - an Anti-Nesting/Pro-Predatory Bird project. Installs mpg321, downloads MP3's, creates scripts, configures them into cron, and installs/configures SAMBA.
+#rpi-unbird/install.sh - an Anti-Nesting/Pro-Predatory Bird project. Installs mpg321, downloads MP3's, creates scripts, configures them into cron, and (optionally) installs/configures SAMBA.
 
 #Read potential command line flags and set variables.
 #Current flags:
 #-u username - set username to build setup under. Username will end up in sudo and audio groups. Default is current user ($USER)
 #-s starttime - set time of day to begin playing sounds (24-hour format). Default is 9am (9)
 #-e starttime - set time of day to end playing sounds (24-hour format). Default is 5pm (17)
-#-b sambaenable - e to enable samba setup, d to diable samba setup. Default is enable (d)
+#-b sambaenable - e to enable samba setup, d to diable samba setup. Default is disabled (d)
 #-n installnumber - used for setting the installation number in hostname and hosts. Default is 1
 while getopts u:s:e:b:n: flag
 do
