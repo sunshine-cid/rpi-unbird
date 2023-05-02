@@ -68,11 +68,11 @@ echo "At least one sound file exists. Skipping downloading..."
 else
 echo "Downloading sounds..."
 #hardcore.tar.gz
-wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=17utRjUQqxOFkhayf1sXZh-glHseM9hkY' -O hardcore.tar.gz
+wget --no-check-certificate 'https://docs.google.com/uc?export=download&confirm=t&id=17utRjUQqxOFkhayf1sXZh-glHseM9hkY' -O hardcore.tar.gz
 #silence.tar.gz
-wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1Cj3GPME60wuc09MjoSRDZ7U7-jAp590t' -O silence.tar.gz
+wget --no-check-certificate 'https://docs.google.com/uc?export=download&confirm=t&id=1Cj3GPME60wuc09MjoSRDZ7U7-jAp590t' -O silence.tar.gz
 #z_listening.tar.gz
-wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=11xxkFh0JgG1EOiqHwyAQ0AFWD7mNa7sF' -O z_listening.tar.gz
+wget --no-check-certificate 'https://docs.google.com/uc?export=download&confirm=t&id=11xxkFh0JgG1EOiqHwyAQ0AFWD7mNa7sF' -O z_listening.tar.gz
 fi
 echo "Extracting sounds..."
 for filename in ./*.tar.gz; do sudo tar -xjvf $filename -C /home/$username/sounds/; done 
