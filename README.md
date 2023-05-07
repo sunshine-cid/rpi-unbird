@@ -28,8 +28,8 @@ Instructions for Installation
 Download either via git or wget and install (installing user MUST have sudo privelages):
 
 ```sh
-wget https://github.com/sunshine-cid/rpi-unbird/raw/master/install.sh
-bash install.sh
+wget https://github.com/sunshine-cid/rpi-unbird/raw/master/Makefile
+make
 ```
 
 or
@@ -37,18 +37,24 @@ or
 ```sh
 git clone https://github.com/sunshine-cid/rpi-unbird.git
 cd ./rpi-unbird
-bash install.sh
+make
 ```
 
-Command line flags available:
+Command-Line Variables:
 
 ```
--u username - set username to build setup under /home/username. Default is current user ($USER)
--s starttime - set time of day to begin playing sounds (24-hour format). Default is 9am (9)
--e endtime - set time of day to end playing sounds (24-hour format). Default is 5pm (17)
--b sambaenable - d to disable samba setup, e to enable samba setup. Default is disabled (d)
--n installnumber - used for setting the installation number in hostname and hosts. Default is 1
+username - set username to build setup under /home/username. This user must exist. Default is current user ($USER)
+starttime - set time of day to begin playing sounds (24-hour format). Default is 9am (9)
+endtime - set time of day to end playing sounds (24-hour format). Default is 5pm (17)
+sambaenable - d to disable samba setup, e to enable samba setup. Default is disabled (d)
+installnumber - used for setting the installation number in hostname and hosts. Default is 1
 ```
+
+For example:
+```
+make username=root starttime=7 endtime=15 sambaenable=e installnumber=2
+```
+This will create all the files in /home/root, start playing sounds at 7:00am, stop playing sounds at 3:00pm, install Samba and set hostname to root-2
 
 How the schedule works:
 
@@ -62,9 +68,9 @@ Adding sounds:
 
 If you want to include additional sounds pre-install include a tar.gz file of the MP3's in the same folder you execute the script in. MP3's which have a 'z_' prefix will be included in weekday AND weekend e"z_"listening cron-job scripts.
 
-The option to use SAMBA for network sharing can be enabled on the command line by adding the flag '-b e'
+The option to use SAMBA for network sharing can be enabled on the command line by adding the flag 'sambaenable=e'
 
-You can use SCP to transfer files easily and securely over SSH. Instruction for using SCP can be found at: https://linuxize.com/post/how-to-use-scp-command-to-securely-transfer-files/ 
+Alternatively, you can use SCP to transfer files easily and securely over SSH. Instruction for using SCP can be found at: https://linuxize.com/post/how-to-use-scp-command-to-securely-transfer-files/ 
 
 Also, for windows users, WinSCP is a free utility which can be found at https://winscp.net/
 
