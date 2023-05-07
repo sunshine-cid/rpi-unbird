@@ -40,7 +40,8 @@ cd ./rpi-unbird
 make
 ```
 
-Command-Line Variables:
+Command-Line Variables
+----------
 
 ```
 username - set username to build setup under /home/username. This user must exist. Default is current user ($USER)
@@ -57,14 +58,17 @@ make username=root starttime=7 endtime=15 sambaenable=e installnumber=2
 This will create all the files in /home/root, start playing sounds at 7:00am, stop playing sounds at 3:00pm, install Samba and set hostname to root-2
 
 How the schedule works:
+----------
 
 Weekdays (M-F) play all the sound packs. Weekends (Sa-Su) play only sounds beginning with a 'z_' prefix. You can use these guidelines to alter the behavior of what plays when. 
 
 Changing what plays:
+----------
 
 If you don't want to include any set of sounds in the install, download the files seperately by copying the download portion of the code, running it, and then delete the tar.gz file you do not want to include. Though I strongly recommend keeping the silence.tar.gz as continual squaking and screaming for 8 hours a day is unrealistic and pretty disturbing. The script is setup to not download if any of the default files exist.
 
 Adding sounds:
+----------
 
 If you want to include additional sounds pre-install include a tar.gz file of the MP3's in the same folder you execute the script in. MP3's which have a 'z_' prefix will be included in weekday AND weekend e"z_"listening cron-job scripts.
 
