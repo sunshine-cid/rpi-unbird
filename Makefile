@@ -1,16 +1,23 @@
-.PHONY: all info audiogroup update mpg321 homedir sounds scripts samba
+.PHONY: all info audiogroup update mpg321 homedir dlsounds nosilence exsounds scripts button samba done
 
 username=$$USER
 starttime=9
 endtime=15
-sambaenable=d
 installnumber=1
 
 define sambaconf
 [rpi-unbird-1]\n   comment= Where The rpi-unbird Sounds Are Kept\n   path=/home/rpi-unbird\n   browseable=Yes\n   writeable=Yes\n   only guest=no\n   create mask=0777\n   directory mask=0777\n   public=no\n
 endef
 
-all: info audiogroup update mpg321 homedir sounds scripts samba
+define buttonpy
+import RPi.GPIO as GPIO\nimport os\ndef onButton(channel):\n    if channel == 16:\n        os.system(\"bash /home/$(username)/scripts/button.sh\")\nGPIO.setmode(GPIO.BCM)\nGPIO.setup(16, GPIO.IN, pull_up_down=GPIO.PUD_UP)\nGPIO.add_event_detect(16, GPIO.FALLING, callback=onButton, bouncetime=20)\ninput()\n
+endef
+
+define buttonsh
+if pgrep -x "mpg321" > /dev/null\nthen\n    pkill mpg321\nelse\n    mpg321 -Z /home/$username/sounds/*.mp3\nfi\n
+endef
+
+all: info audiogroup update mpg321 homedir dlsounds exsounds scripts done
 
 info:
 	#Output command line option settings
@@ -18,7 +25,6 @@ info:
 	@echo "User for install set to: $(username)"
 	@echo "Start time for cron jobs is set to $(starttime)00 daily"
 	@echo "End time for cron jobs is set to $(endtime)00 daily"
-	@echo "Samba enabled is set to $(sambaenable)"
 	@echo "hostname will be set to $(username)-$(installnumber)"
 	@echo "-----"
 
@@ -47,7 +53,7 @@ homedir:
 	sudo chmod 0774 /home/$(username); \
 	fi
 
-sounds:
+dlsounds:
 	#Sounds - make sounds directory, check if at least 1 archive file exists and extract it. If no zip files exist download and extract them all. Set proper file permissions.
 	@echo "Setup sounds..."
 	@sudo mkdir /home/$(username)/sounds
@@ -63,6 +69,11 @@ sounds:
 	#z_listening.tar.gz; \
 	wget --no-check-certificate 'https://docs.google.com/uc?export=download&confirm=t&id=11xxkFh0JgG1EOiqHwyAQ0AFWD7mNa7sF' -O z_listening.tar.gz; \
 	fi
+
+nosilence:
+	@rm silence.tar.gz
+
+exsounds:
 	@echo "Extracting sounds..."
 	@for file in ./*.tar.gz; do \
 	sudo tar -xjvf $${file} -C /home/$(username)/sounds/; \
@@ -82,6 +93,16 @@ scripts:
 	@sudo chown $(username):$(username) /home/$(username)/scripts
 	@sudo chmod 0774 /home/$(username)/scripts/*.sh
 
+button:
+	#Thanks for Py script to: https://raspberrypi.stackexchange.com/questions/76342/run-a-shell-script-from-a-python-script-when-a-button-is-pressed
+	#And thanks for shell script to: https://askubuntu.com/questions/157779/how-to-determine-whether-a-process-is-running-or-not-and-make-use-it-to-make-a-c 
+	@sudo apt install python3
+	@sudo apt install python3-pip
+	@sudo pip3 install RPi.GPIO
+	@sudo /bin/sh -c "echo '$(buttonpy)' > /home/$(username)/button.py"
+	@sudo /bin/sh -c "echo '$(buttonsh)' > /home/$(username)/scripts/button.sh"
+	@sudo /bin/sh -c "echo '@reboot $(username) /usr/bin/python /home/$(username)/button.py &' > /etc/cron.d/rpi-unbird-button"
+
 cron:
 	#Chron Jobs - Setup cron jobs according to schedule. Must be written as root.
 	@echo "Setting cron jobs..."
@@ -91,22 +112,20 @@ cron:
 
 samba:
 	#SAMBA - If enabled set hosts and hostname according to $$username-$$installnumber convention, install SAMBA, append configuration for a fileshare, set SAMBA password for $$username. 
-	@if [ "$(sambaenable)" = "d" ]; then \
-	echo "Samba disabled..."; \
-	else \
-	echo "Samba enabled..."; \
-	#Set unique hostname; \
-	echo "Set hostname as $(username)-$(installnumber) and set in /etc/hosts and hostname..."; \
-	sudo /bin/sh -c "echo '$(username)-$(installnumber)' > /etc/hostname"; \
-	sudo hostnamectl set-hostname "$(username)-$(installnumber)"; \
-	sudo /bin/sh -c "echo '127.0.0.1       localhost' > /etc/hosts"; \
-	sudo /bin/sh -c "echo '127.0.1.1       $(username)-$(installnumber)' >> /etc/hosts"; \
-	sudo systemctl restart systemd-hostnamed; \
-	echo "Installing Samba..."; \
-	sudo apt-get -y install samba samba-common-bin; \
-	echo "Setting up Samba sharing..."; \
-	sudo /bin/sh -c "echo '$(sambaconf)' >> /etc/samba/smb.conf"; \
-	echo "Set Samba password..."; \
-	sudo smbpasswd -a $(username); \
-	fi
+	@echo "Samba enabled..."
+	@#Set unique hostname
+	@echo "Set hostname as $(username)-$(installnumber) and set in /etc/hosts and hostname..."
+	sudo /bin/sh -c "echo '$(username)-$(installnumber)' > /etc/hostname"
+	sudo hostnamectl set-hostname "$(username)-$(installnumber)"
+	sudo /bin/sh -c "echo '127.0.0.1       localhost' > /etc/hosts"
+	sudo /bin/sh -c "echo '127.0.1.1       $(username)-$(installnumber)' >> /etc/hosts"
+	sudo systemctl restart systemd-hostnamed
+	echo "Installing Samba..."
+	sudo apt-get -y install samba samba-common-bin
+	echo "Setting up Samba sharing..."
+	sudo /bin/sh -c "echo '$(sambaconf)' >> /etc/samba/smb.conf"
+	echo "Set Samba password..."
+	sudo smbpasswd -a $(username)
+
+done:
 	@echo "Done. Please reboot."
