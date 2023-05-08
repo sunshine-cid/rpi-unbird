@@ -44,7 +44,7 @@ Command-Line Variables
 ----------
 
 ```
-username - set username to build setup under /home/username. This user must exist. Default is current user ($USER)
+username - sets /home/$username to build setup under. This user must exist. Default is current user ($USER)
 starttime - set time of day to begin playing sounds (24-hour format). Default is 9am (9)
 endtime - set time of day to end playing sounds (24-hour format). Default is 5pm (17)
 sambaenable - d to disable samba setup, e to enable samba setup. Default is disabled (d)
@@ -55,7 +55,7 @@ For example:
 ```
 make username=root starttime=7 endtime=15 sambaenable=e installnumber=2
 ```
-This will create all the files in /home/root, start playing sounds at 7:00am, stop playing sounds at 3:00pm, install Samba and set hostname to root-2
+This will create all the files/folders in /home/root, start playing sounds at 7:00am, stop playing sounds at 3:00pm, install Samba and set hostname to root-2
 
 How the schedule works:
 ----------
