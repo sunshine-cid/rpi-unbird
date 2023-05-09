@@ -14,7 +14,7 @@ import RPi.GPIO as GPIO\nimport os\ndef onButton(channel):\n    if channel == 16
 endef
 
 define buttonsh
-if pgrep -x "mpg321" > /dev/null\nthen\n    pkill mpg321\nelse\n    mpg321 -Z /home/$username/sounds/*.mp3\nfi\n
+if pgrep -x "mpg321" > /dev/null\nthen\n    pkill mpg321\nelse\n    mpg321 -Z /home/$(username)/sounds/*.mp3\nfi\n
 endef
 
 all: info audiogroup update mpg321 homedir dlsounds exsounds scripts done
