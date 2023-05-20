@@ -10,17 +10,21 @@ define sambaconf
 endef
 
 define buttonpy
-import RPi.GPIO as GPIO\nimport os\ndef onButton(channel):\n    if channel == 16:\n        os.system(\"bash /home/$(username)/scripts/button.sh\")\nGPIO.setmode(GPIO.BCM)\nGPIO.setup(16, GPIO.IN, pull_up_down=GPIO.PUD_UP)\nGPIO.add_event_detect(16, GPIO.FALLING, callback=onButton, bouncetime=20)\ninput()\n
+\#!/bin/python\nimport RPi.GPIO as GPIO\nimport os\nimport subprocess\nimport time\nprint(\"This program is intended to be run as a service. Ctrl-C to quit\")\ndef onButton(channel):\n    if channel == 16:\n        subprocess.Popen(\"/home/$(username)/scripts/button.sh\")\nGPIO.setmode(GPIO.BCM)\nGPIO.setup(16, GPIO.IN, pull_up_down=GPIO.PUD_UP)\nGPIO.add_event_detect(16, GPIO.FALLING, callback=onButton, bouncetime=10)\nwhile True:\n    time.sleep(1)\n
 endef
 
 define buttonsh
-if pgrep -x \"mpg321\" > /dev/null\nthen\n    pkill mpg321\nelse\n    mpg321 -Z /home/$(username)/sounds/*.mp3 &\nfi\n
+\#!/bin/bash\nif pgrep -x \"mpg321\" > /dev/null\nthen\n    pkill mpg321\nelse\n    mpg321 -Z /home/$(username)/sounds/*.mp3 &\nfi\n
+endef
+
+define buttonservice
+[Unit]\nDescription=Button Detectin Py service\nAfter=network.target\n\n[Service]\nExecStart=/usr/bin/python /home/$(username)/scripts/button.py\nWorkingDirectory=/home/$(username)/scripts\nStandardOutput=inherit\nStandardError=inherit\nRestart=always\nUser=$(username)\n\n[Install]\nWantedBy=multi-user.target\n
 endef
 
 all: info audiogroup update mpg321 homedir dlsounds exsounds scripts done
 
 info:
-	@#Output command line option settings
+	@#Outputs command line option variable values
 	@echo "-----"
 	@echo "User for install set to: $(username)"
 	@echo "Start time for cron jobs is set to $(starttime)00 daily"
@@ -30,7 +34,7 @@ info:
 
 audiogroup:
 	@#Adds $$username to the group which allows audio playing
-	@echo "Set group to audio for username..."
+	@echo "Set group to audio for $(username)..."
 	@sudo usermod -a -G audio $(username)
 
 update:
@@ -40,12 +44,13 @@ update:
 	@sudo apt-get -y upgrade
 
 mpg321:
-	@#Install mpg321
+	@#Installs mpg321
 	@echo "Installing mpg321 software..."
 	@sudo apt-get -y install mpg321
 
 homedir:
 	@#Check if home directory exists, if not create it
+	@echo "Verigying home directory exists..."
 	@if [ ! -d "/home/$(username)/" ]; then \
 	echo "user folder does not exist in /home/, creating it."; \
 	sudo mkdir /home/$(username); \
@@ -54,7 +59,7 @@ homedir:
 	fi
 
 dlsounds:
-	@#Sounds - make sounds directory, check if at least 1 archive file exists and extract it. If no zip files exist download and extract them all. Set proper file permissions.
+	@#Dlsounds - make sounds directory, check if at least 1 archive file exists and extract it. If no zip files exist download and extract them all. Set proper file permissions.
 	@echo "Setup sounds..."
 	@sudo mkdir /home/$(username)/sounds
 	@echo "Check for existing archives of sound files..."
@@ -71,16 +76,19 @@ dlsounds:
 	fi
 
 nosilence:
+	@#Removed the silence sound pack. Mainly used in conjuction with the button configuration
+	@echo "Removing the silence.tar.gz soound pack..."
 	@rm silence.tar.gz
 
 exsounds:
+	@#Exsounds - extract present sound packs, set ownership to $(username) and permissions to ug+rwx, o+r
 	@echo "Extracting sounds..."
 	@for file in ./*.tar.gz; do \
 	sudo tar -xjvf $${file} -C /home/$(username)/sounds/; \
 	done 
 	@sudo chown $(username):$(username) /home/$(username)/sounds/*.*
 	@sudo chown $(username):$(username) /home/$(username)/sounds
-	@sudo chmod 0774 /home/$(username)/sounds
+	@sudo chmod 0774chmod 0774 /home/$(username)/sounds
 
 scripts:
 	@#Scripts - Create scripts which will be used by cron. Set proper file permissions and owner.
@@ -94,15 +102,20 @@ scripts:
 	@sudo chmod 0774 /home/$(username)/scripts/*.sh
 
 button:
+	@#Button - If enabled installs python, pip, and GPIO. Adds user to GPIO group. Builds related scripts and installs python script service 
 	@#Thanks for Py script to: https://raspberrypi.stackexchange.com/questions/76342/run-a-shell-script-from-a-python-script-when-a-button-is-pressed
 	@#And thanks for shell script to: https://askubuntu.com/questions/157779/how-to-determine-whether-a-process-is-running-or-not-and-make-use-it-to-make-a-c 
+	@#And thanks to systemd service info from: https://stackoverflow.com/questions/67745554/autostarting-python-scripts-on-boot-using-crontab-on-rasbian
+	@echo "Push-button to play or kill option enabled..."
 	@sudo apt install python3
 	@sudo apt install python3-pip
 	@sudo pip3 install RPi.GPIO
 	@sudo usermod -a -G gpio $(username)
 	@sudo /bin/sh -c "echo '$(buttonpy)' > /home/$(username)/scripts/button.py"
 	@sudo /bin/sh -c "echo '$(buttonsh)' > /home/$(username)/scripts/button.sh"
-	@sudo /bin/sh -c "echo '@reboot $(username) /usr/bin/python /home/$(username)/scripts/button.py &' > /etc/cron.d/rpi-unbird-button"
+	@sudo chmod ug+x /home/$(username)/scripts/button.sh
+	@sudo /bin/sh -c "echo '$(buttonservice)' > /etc/systemd/system/buttonpy.service"
+	@sudo systemctl enable buttonpy.service
 
 cron:
 	@#Chron Jobs - Setup cron jobs according to schedule. Must be written as root.
