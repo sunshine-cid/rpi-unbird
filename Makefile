@@ -10,7 +10,7 @@ define sambaconf
 endef
 
 define buttonpy
-\#!/bin/python\nimport RPi.GPIO as GPIO\nimport os\nimport subprocess\nimport time\nprint(\"This program is intended to be run as a service. Ctrl-C to quit\")\ndef onButton(channel):\n    if channel == 16:\n        subprocess.Popen(\"/home/$(username)/scripts/button.sh\")\nGPIO.setmode(GPIO.BCM)\nGPIO.setup(16, GPIO.IN, pull_up_down=GPIO.PUD_UP)\nGPIO.add_event_detect(16, GPIO.FALLING, callback=onButton, bouncetime=10)\nwhile True:\n    time.sleep(1)\n
+\#!/bin/python3\nimport RPi.GPIO as GPIO\nimport os\nimport subprocess\nimport time\nprint(\"This program is intended to be run as a service. Ctrl-C to quit\")\ndef onButton(channel):\n    if channel == 16:\n        subprocess.Popen(\"/home/$(username)/scripts/button.sh\")\nGPIO.setmode(GPIO.BCM)\nGPIO.setup(16, GPIO.IN, pull_up_down=GPIO.PUD_UP)\nGPIO.add_event_detect(16, GPIO.FALLING, callback=onButton, bouncetime=10)\nwhile True:\n    time.sleep(1)\n
 endef
 
 define buttonsh
@@ -107,9 +107,8 @@ button:
 	@#And thanks for shell script to: https://askubuntu.com/questions/157779/how-to-determine-whether-a-process-is-running-or-not-and-make-use-it-to-make-a-c 
 	@#And thanks to systemd service info from: https://stackoverflow.com/questions/67745554/autostarting-python-scripts-on-boot-using-crontab-on-rasbian
 	@echo "Push-button to play or kill option enabled..."
-	@sudo apt install python3
-	@sudo apt install python3-pip
-	@sudo pip3 install RPi.GPIO
+	@sudo apt install python3 python3-pip
+	@pip3 install RPi.GPIO
 	@sudo usermod -a -G gpio $(username)
 	@sudo /bin/sh -c "echo '$(buttonpy)' > /home/$(username)/scripts/button.py"
 	@sudo /bin/sh -c "echo '$(buttonsh)' > /home/$(username)/scripts/button.sh"
