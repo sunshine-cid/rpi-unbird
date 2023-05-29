@@ -112,7 +112,8 @@ button:
 	@sudo usermod -a -G gpio $(username)
 	@sudo /bin/sh -c "echo '$(buttonpy)' > /home/$(username)/scripts/button.py"
 	@sudo /bin/sh -c "echo '$(buttonsh)' > /home/$(username)/scripts/button.sh"
-	@sudo chmod ug+x /home/$(username)/scripts/button.sh
+	@sudo chmod ug+x /home/$(username)/scripts/button.*
+	@sudo chown $(username):$(username) /home/$(username)/scripts/button.*
 	@sudo /bin/sh -c "echo '$(buttonservice)' > /etc/systemd/system/buttonpy.service"
 	@sudo systemctl enable buttonpy.service
 
