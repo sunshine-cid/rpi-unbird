@@ -10,7 +10,7 @@ define sambaconf
 endef
 
 define buttonpy
-#!/bin/python3\nimport RPi.GPIO as GPIO\nimport os\nimport subprocess\nimport time\nprint(\"This program is intended to be run as a service. Ctrl-C to quit\")\ndef onButton(channel):\n    if channel == 16:\n        subprocess.Popen(\"/home/$(username)/scripts/button.sh\")\nGPIO.setmode(GPIO.BCM)\nGPIO.setup(16, GPIO.IN, pull_up_down=GPIO.PUD_UP)\nGPIO.add_event_detect(16, GPIO.FALLING, callback=onButton, bouncetime=10)\nwhile True:\n    time.sleep(1)\n
+#!/bin/python3\n\"\"\"Script sleeps, async GPIO calls script when button pressed\"\"\"\nimport subprocess\nimport time\nfrom RPi import GPIO\nprint(\"This program is intended to be run as a service. Ctrl-C to quit\")\ndef on_button(channel):\n    \"\"\"on_button is called when a PULL UP is detected in GPIO pins 34(GRND) and 36(GPIO 16)\"\"\"\n    if channel == 16:\n        subprocess.Popen(\"/home/$(username)/scripts/button.sh\")\nGPIO.setmode(GPIO.BCM)\nGPIO.setup(16, GPIO.IN, pull_up_down=GPIO.PUD_UP)\nGPIO.add_event_detect(16, GPIO.FALLING, callback=on_button, bouncetime=1000)\nwhile True:\n    time.sleep(1)
 endef
 
 define buttonsh
